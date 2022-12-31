@@ -29,6 +29,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->mapUserApiRoutes();
         $this->mapProductApiRoutes();
+        $this->mapInvoiceApiRoutes();
         $this->mapWebRoutes();
     }
 
@@ -56,6 +57,13 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware(['api', 'auth:sanctum'])
             ->prefix('api/products')
             ->group(base_path('routes/apis/productApi.php'));
+    }
+
+    protected function mapInvoiceApiRoutes()
+    {
+        Route::middleware(['api'])
+            ->prefix('api/invoices')
+            ->group(base_path('routes/apis/invoiceApi.php'));
     }
 
     protected function mapWebRoutes()
