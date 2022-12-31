@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserRes;
+use App\Http\Resources\AuthUserRes;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -23,7 +23,7 @@ class UserController extends Controller
         return Role::where('name', config('setup.ROLES.SELLER.NAME'))->first();
     }
 
-    public function registerOrLogin(Request $request): UserRes
+    public function registerOrLogin(Request $request): AuthUserRes
     {
         $request->validate([
             'email' => ['required', 'email:rfc,dns'],
@@ -41,7 +41,7 @@ class UserController extends Controller
             abort(401, 'wrong password.');
         }
         $user->access_token = $user->createToken('')->plainTextToken;
-        return new UserRes($user);
+        return new AuthUserRes($user);
     }
 
     public function promoteCustomer2Seller(User $user): JsonResponse

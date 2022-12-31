@@ -53,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapProductApiRoutes()
     {
-        Route::middleware(['api'])
+        Route::middleware(['api', 'auth:sanctum'])
             ->prefix('api/products')
             ->group(base_path('routes/apis/productApi.php'));
     }

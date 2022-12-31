@@ -23,4 +23,9 @@ class User extends Authenticatable
     {
         return $permission->roles->contains('name', $this->role->name);
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
