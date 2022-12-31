@@ -12,13 +12,15 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained();
-            $table->string('name')->nullable();
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->boolean('workplace')->default(false);
+            $table->text('address')->nullable();
+            $table->double('longitude');
+            $table->double('latitude');
             $table->timestamps();
+            $table->unique(['longitude', 'latitude', 'user_id']);
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('addresses');
     }
 };

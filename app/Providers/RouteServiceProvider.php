@@ -27,15 +27,10 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        $this->mapUserApiRoutes();
+        $this->mapProductApiRoutes();
+        $this->mapInvoiceApiRoutes();
+        $this->mapWebRoutes();
     }
 
     /**
@@ -48,5 +43,32 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+    protected function mapUserApiRoutes()
+    {
+        Route::middleware(['api'])
+            ->prefix('api/users')
+            ->group(base_path('routes/apis/userApi.php'));
+    }
+
+    protected function mapProductApiRoutes()
+    {
+        Route::middleware(['api', 'auth:sanctum'])
+            ->prefix('api/products')
+            ->group(base_path('routes/apis/productApi.php'));
+    }
+
+    protected function mapInvoiceApiRoutes()
+    {
+        Route::middleware(['api'])
+            ->prefix('api/invoices')
+            ->group(base_path('routes/apis/invoiceApi.php'));
+    }
+
+    protected function mapWebRoutes()
+    {
+        Route::middleware('web')
+            ->group(base_path('routes/web.php'));
     }
 }
