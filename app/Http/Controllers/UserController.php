@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AuthUserRes;
+use App\Http\Resources\AddressRes;
+use App\Models\Address;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -49,5 +51,21 @@ class UserController extends Controller
         $user->role()->associate($this->getSellerRole());
         $user->save();
         return Response::json(['message' => 'User has been successfully promoted to seller role']);
+    }
+
+    public function addAddress(Request $request)
+    {
+        $request->validate([
+            'longitude' => ['required'],
+            'latitude' => ['required']
+        ]);
+        $address = new Address();
+        $address['longitude'] = $request['longitude'];
+        $address['latitude'] = $request['latitude'];
+        if (!empty($request['address'])) $address['address'] = $request['address'];
+        if (!empty($request['workplace']) && is_bool($request['workplace'])) $address['workplace'] = $request['workplace'];
+        $address->user()->associate(auth()->user());
+        $address->save();
+        return new AddressRes($address);
     }
 }
