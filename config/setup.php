@@ -20,6 +20,5 @@ return [
             'NAME' => 'customer',
             'PERMISSIONS' => ['LOGIN']
         ]
-    ],
-    'DEFAULT_RADIUS' => 1000
+    ]
 ];

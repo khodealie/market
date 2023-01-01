@@ -30,9 +30,7 @@ class ProductController extends Controller
         $addresses = Address::getNearLocation($userAddress['latitude'], $userAddress['longitude']);
         $products = collect();
         foreach ($addresses as $address) {
-            foreach ($address->user->products as $product) {
-                $products->push($product);
-            }
+            $products = $products->merge($address->user->products);
         }
         return new ProductCollection($products);
     }

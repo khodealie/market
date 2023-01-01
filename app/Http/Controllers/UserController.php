@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleName;
 use App\Http\Resources\AuthUserRes;
 use App\Http\Resources\AddressRes;
 use App\Models\Address;
@@ -17,12 +18,13 @@ class UserController extends Controller
 
     private function getCustomerRole(): Role
     {
-        return Role::where('name', config('setup.ROLES.CUSTOMER.NAME'))->first();
+
+        return Role::where('name', \App\Enums\RoleName::CUSTOMER)->first();
     }
 
     private function getSellerRole()
     {
-        return Role::where('name', config('setup.ROLES.SELLER.NAME'))->first();
+        return Role::where('name', \App\Enums\RoleName::SELLER)->first();
     }
 
     public function registerOrLogin(Request $request): AuthUserRes
