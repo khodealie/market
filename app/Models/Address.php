@@ -20,7 +20,7 @@ class Address extends Model
     public static function getNearLocation($latitude, $longitude)
     {
         return Address::where('workplace', true)->
-        geofence($latitude, $longitude, 0, config('setup.DEFAULT_RADIUS'))->
+        geofence($latitude, $longitude, 0, config('app.DEFAULT_RADIUS'))->
         orderBy('distance', 'ASC')->get();
     }
 }
